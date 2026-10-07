@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import cors from "cors";
 import "dotenv/config";
 import express from "express";
 import jwt from "jsonwebtoken";
@@ -15,6 +16,7 @@ const pool = new Pool({
 });
 
 app.use(express.json());
+app.use(cors());
 
 app.get("/health", (req, res) => {
     res.json({ status: "ok" });
@@ -29,10 +31,16 @@ app.post("/signup", async (req, res) => {
     try {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-        await pool.query("INSERT INTO users (email, password_hash) VALUES ($1, $2)", [email, hashedPassword]);
+        const result = await pool.query("INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING id", [
+            email,
+            hashedPassword,
+        ]);
+        const token = jwt.sign({ userId: result.rows[0].id }, process.env.JWT_SECRET, { expiresIn: "1h" });
         res.status(201).json({
             message: "User signed up successfully",
             email: email,
+            id: result.rows[0].id,
+            token: token,
         });
     } catch (error) {
         console.error("Error hashing password:", error);

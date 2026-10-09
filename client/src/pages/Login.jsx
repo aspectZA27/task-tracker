@@ -13,7 +13,7 @@ function Login() {
     const handleSubmit = async e => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:3001/login", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -33,12 +33,35 @@ function Login() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} />
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-            <button type="submit">Login</button>
-            {error && <p>{error}</p>}
-        </form>
+        <div className="min-h-screen flex items-center justify-center bg-[#0D1117]">
+            <form
+                onSubmit={handleSubmit}
+                className="w-full max-w-sm bg-[#161B22] border border-[#30363D] rounded p-6 space-y-4"
+            >
+                <h1 className="text-sm text-[#8B949E] uppercase tracking-wide">Log in</h1>
+                <input
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder="email"
+                    className="w-full bg-[#0D1117] border border-[#30363D] rounded px-3 py-2 text-sm text-[#E6EDF3] focus:outline-none focus:border-[#3FB950]"
+                />
+                <input
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder="password"
+                    className="w-full bg-[#0D1117] border border-[#30363D] rounded px-3 py-2 text-sm text-[#E6EDF3] focus:outline-none focus:border-[#3FB950]"
+                />
+                <button
+                    type="submit"
+                    className="w-full bg-[#3FB950] text-[#0D1117] font-semibold rounded px-3 py-2 text-sm hover:opacity-90"
+                >
+                    Log in
+                </button>
+                {error && <p className="text-sm text-red-400">{error}</p>}
+            </form>
+        </div>
     );
 }
 

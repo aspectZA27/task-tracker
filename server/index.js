@@ -16,7 +16,7 @@ const pool = new Pool({
 });
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: process.env.FRONTEND_URL }));
 
 app.get("/health", (req, res) => {
     res.json({ status: "ok" });

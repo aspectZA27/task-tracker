@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 
 function Signup() {
@@ -60,6 +60,12 @@ function Signup() {
                     Sign up
                 </button>
                 {error && <p className="text-sm text-red-400">{error}</p>}
+                <p className="text-xs text-[#8B949E]">
+                    already registered?{" "}
+                    <Link to="/login" className="text-[#3FB950] hover:underline">
+                        log in
+                    </Link>
+                </p>
             </form>
         </div>
     );

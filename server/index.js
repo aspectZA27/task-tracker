@@ -2,10 +2,12 @@ import bcrypt from "bcrypt";
 import cors from "cors";
 import "dotenv/config";
 import express from "express";
+import rateLimit from "express-rate-limit";
 import jwt from "jsonwebtoken";
 import { Pool } from "pg";
 
 const app = express();
+app.set("trust proxy", 1);
 const port = process.env.PORT || 3001;
 
 const pool = new Pool({
@@ -15,15 +17,28 @@ const pool = new Pool({
     },
 });
 
+const globalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    limit: 300, // Limit each IP to 100 requests per windowMs
+    message: "Too many requests from this IP, please try again later.",
+});
+
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 10, // Limit each IP to 10 requests per windowMs
+    message: "Too many authentication attempts from this IP, please try again later.",
+});
+
 app.use(express.json());
 const allowedOrigin = (process.env.FRONTEND_URL || "http://localhost:5173").trim();
 app.use(cors({ origin: allowedOrigin }));
+app.use(globalLimiter);
 
 app.get("/health", (req, res) => {
     res.json({ status: "ok" });
 });
 
-app.post("/signup", async (req, res) => {
+app.post("/signup", authLimiter, async (req, res) => {
     const { email, password } = req.body;
     if (!password) {
         return res.status(400).json({ error: "Password is required" });
@@ -49,7 +64,7 @@ app.post("/signup", async (req, res) => {
     }
 });
 
-app.post("/login", async (req, res) => {
+app.post("/login", authLimiter, async (req, res) => {
     const { email, password } = req.body;
     try {
         const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
@@ -96,6 +111,10 @@ app.post("/tasks", authenticateToken, async (req, res) => {
 
     if (!title) {
         return res.status(400).json({ error: "Title is required" });
+    }
+
+    if (title.length > 200 || title.length < 1) {
+        return res.status(400).json({ error: "Title must be between 1 and 200 characters" });
     }
 
     try {

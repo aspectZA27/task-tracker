@@ -17,12 +17,14 @@ const pool = new Pool({
   },
 })
 
+//* Rate limiting middleware
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   limit: 300, // Limit each IP to 100 requests per windowMs
   message: 'Too many requests from this IP, please try again later.',
 })
 
+//* Login rate limiter
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 10, // Limit each IP to 10 requests per windowMs
@@ -41,12 +43,14 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' })
 })
 
+//* Sign up post request
 app.post('/signup', authLimiter, async (req, res) => {
   const { email, password } = req.body
   if (!password) {
     return res.status(400).json({ error: 'Password is required' })
   }
 
+  //* Password hashing
   try {
     const saltRounds = 10
     const hashedPassword = await bcrypt.hash(password, saltRounds)
@@ -71,6 +75,7 @@ app.post('/signup', authLimiter, async (req, res) => {
   }
 })
 
+//* Login Post request
 app.post('/login', authLimiter, async (req, res) => {
   const { email, password } = req.body
   try {
@@ -99,6 +104,7 @@ app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`)
 })
 
+//* Checks for valid token
 function authenticateToken(req, res, next) {
   const authHeader = req.headers.authorization
   const token = authHeader && authHeader.split(' ')[1]
@@ -116,6 +122,7 @@ function authenticateToken(req, res, next) {
   }
 }
 
+//* Logic to create new tasks
 app.post('/tasks', authenticateToken, async (req, res) => {
   const { title } = req.body
   const userId = req.user.userId
@@ -142,6 +149,7 @@ app.post('/tasks', authenticateToken, async (req, res) => {
   }
 })
 
+//* Logic to fetch and post existing tasks
 app.get('/tasks', authenticateToken, async (req, res) => {
   const userId = req.user.userId
   try {
@@ -155,6 +163,7 @@ app.get('/tasks', authenticateToken, async (req, res) => {
   }
 })
 
+//* Logic to mark task as complete
 app.patch('/tasks/:id', authenticateToken, async (req, res) => {
   const { id } = req.params
   const { completed } = req.body
@@ -179,6 +188,7 @@ app.patch('/tasks/:id', authenticateToken, async (req, res) => {
   }
 })
 
+//* Logic to delete an existing task
 app.delete('/tasks/:id', authenticateToken, async (req, res) => {
   const { id } = req.params
   const userId = req.user.userId

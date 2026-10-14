@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="trackIt icon">
+  <title>trackIt</title>
+  <rect width="512" height="512" rx="96" fill="#0D1117"/>
+
+  <g transform="translate(31 9)">
+    <path d="M190 100 V300 A60 60 0 0 0 310 300 V264"
+          fill="none" stroke="#F0F6FC" stroke-width="68" stroke-linejoin="round"/>
+    <rect x="116" y="150" width="136" height="68" rx="12" fill="#2EA043"/>
+    <circle cx="310" cy="184" r="34" fill="#2EA043"/>
+  </g>
+</svg>

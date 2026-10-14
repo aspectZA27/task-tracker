@@ -1,0 +1,25 @@
+{
+  "name": "task-tracker",
+  "version": "1.0.0",
+  "description": "A full-stack task management app with secure authentication and a dev-tool-inspired dark UI. Users sign up, log in, and manage their own private task list. Every request is authenticated and every task is scoped to its owner.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently -n server,client -c blue,green \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "install:all": "npm install --prefix server && npm install --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aspectZA27/task-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/aspectZA27/task-tracker/issues"
+  },
+  "homepage": "https://github.com/aspectZA27/task-tracker#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}

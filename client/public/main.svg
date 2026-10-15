@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 160" width="500" height="160" role="img" aria-label="trackIt">
+  <title>trackIt</title>
+
+  <!-- Mark: t whose tail rises into an i (transparent background, for dark pages) -->
+  <g transform="translate(10 12) scale(0.46) translate(-106 -100)">
+    <path d="M190 100 V300 A60 60 0 0 0 310 300 V264"
+          fill="none" stroke="#F0F6FC" stroke-width="68" stroke-linejoin="round"/>
+    <rect x="116" y="150" width="136" height="68" rx="12" fill="#2EA043"/>
+    <circle cx="310" cy="184" r="34" fill="#2EA043"/>
+  </g>
+
+  <!-- Written-out name -->
+  <text x="140" y="106" text-anchor="start"
+        font-family="'Segoe UI', -apple-system, 'Helvetica Neue', Arial, sans-serif"
+        font-size="84" font-weight="800" letter-spacing="-1" fill="#F0F6FC">track<tspan fill="#3FB950">It</tspan></text>
+</svg>

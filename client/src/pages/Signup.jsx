@@ -33,9 +33,9 @@ function Signup() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0D1117]">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#0D1117]">
       <div>
-        <img className="mx-auto mb-4 w-150 h-150" src="/main.svg" alt="Logo" />
+        <img className="h-24 w-auto mb-16" src="/main.svg" alt="Logo" />
       </div>
       <form
         onSubmit={handleSubmit}
